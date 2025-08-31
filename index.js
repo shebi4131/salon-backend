@@ -18,9 +18,9 @@ app.use(cors({
     "https://salon-frontend-one.vercel.app"
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With'],
   credentials: true,
-  optionsSuccessStatus: 200 // For legacy browser support
+  optionsSuccessStatus: 200
 }));
 
 // Handle preflight requests explicitly
@@ -39,18 +39,18 @@ mongoose
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB error:", err));
 
-  // Root route
+// Root route
 app.get("/", (req, res) => {
   res.json({ 
     message: "Salon Backend API is running!", 
     status: "success",
     endpoints: ["/api/upload", "/api/services"]
   });
-})
+});
 
-// Routes
-app.use("/api", uploadRoutes);
+// Routes - Reordered: more specific routes first
 app.use("/api/services", serviceRoutes);
+app.use("/api", uploadRoutes);
 
 // Start server
 app.listen(PORT, () =>
