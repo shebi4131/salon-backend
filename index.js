@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({ 
-  origin: "http://localhost:3000, https://salon-frontend-one.vercel.app/",
+  origin: ["http://localhost:3000", "https://salon-frontend-one.vercel.app"],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
@@ -28,6 +28,15 @@ mongoose
   })
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB error:", err));
+
+  // Root route
+app.get("/", (req, res) => {
+  res.json({ 
+    message: "Salon Backend API is running!", 
+    status: "success",
+    endpoints: ["/api/upload", "/api/services"]
+  });
+})
 
 // Routes
 app.use("/api", uploadRoutes);
