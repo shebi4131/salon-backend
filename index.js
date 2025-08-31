@@ -11,12 +11,22 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+// CORS Configuration - Place before other middleware
 app.use(cors({ 
-  origin: ["http://localhost:3000", "https://salon-frontend-one.vercel.app"],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
+  origin: [
+    "http://localhost:3000", 
+    "https://salon-frontend-one.vercel.app"
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  credentials: true,
+  optionsSuccessStatus: 200 // For legacy browser support
 }));
+
+// Handle preflight requests explicitly
+// app.options('*', cors());
+
+// Other middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
